@@ -1,7 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
+using FloodMod.Core.EC;
 using FloodMod.Core.Graphics;
+using FloodMod.Core.Physics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -45,6 +48,13 @@ public class InfectionFormNPC : ModNPC
         Volume = 0.8f,
         PitchVariance = 0.15f
     };
+    
+    public static readonly SoundStyle DeathSound = new($"{nameof(FloodMod)}/Assets/Sounds/InfectionFormDeath", 3) {
+        Volume = 0.8f,
+        PitchVariance = 0.15f
+    };
+
+    public static readonly Asset<Texture2D> ParticleTexture = ModContent.Request<Texture2D>($"{nameof(FloodMod)}/Assets/Textures/Particles/Blood");
 
     /// <summary>
     ///     Whether this NPC is in its idle state or not.
@@ -94,7 +104,9 @@ public class InfectionFormNPC : ModNPC
         
         NPC.aiStyle = -1;
 
-        DrawOffsetY = 2;        
+        DrawOffsetY = 2;
+
+        NPC.DeathSound = DeathSound;
     }
 
     public override void SendExtraAI(BinaryWriter writer) {
@@ -162,20 +174,16 @@ public class InfectionFormNPC : ModNPC
 
         var effects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
         
-        PixellatedRendererSystem.Queue(
-           () => {
-                Main.EntitySpriteDraw(
-                    texture,
-                    position,
-                    NPC.frame,
-                    NPC.GetAlpha(drawColor),
-                    NPC.rotation,
-                    NPC.frame.Size() / 2f,
-                    scale,
-                    effects,
-                    0f
-                );
-            }
+        Main.EntitySpriteDraw(
+            texture,
+            position,
+            NPC.frame,
+            NPC.GetAlpha(drawColor),
+            NPC.rotation,
+            NPC.frame.Size() / 2f,
+            scale,
+            effects,
+            0f
         );
         
         return false;
@@ -185,12 +193,13 @@ public class InfectionFormNPC : ModNPC
         base.HitEffect(hit);
 
         for (var i = 0; i < 20; i++) {
-            var dust = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.Blood, Main.rand.NextFloat(-2f, -2f), Main.rand.NextFloat(-2f, 2f), 100);
-
-            dust.noGravity = true;
+            var frame = new Rectangle(0, Main.rand.Next(3) * 10, 10, 10);
             
-            dust.fadeIn = Main.rand.NextFloat(1f, 1.2f);
-            dust.scale = Main.rand.NextFloat(1f, 1.5f);
+            EntitySystem.Create()
+                .Set(new Transform(NPC.Center, null, Main.rand.NextFloat(MathHelper.TwoPi)))
+                .Set(new Velocity(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-2f, 2f)))
+                .Set(new TextureRenderData(ParticleTexture, Color.Red, frame, frame.Size() / 2f))
+                .Set(new PixellatedTextureRenderer());
         }
     }
 
