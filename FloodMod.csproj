@@ -10,6 +10,7 @@
 	<ItemGroup>
 	  <Folder Include="Assets\Effects\" />
 	  <Folder Include="Assets\Textures\Particles\" />
+	  <Folder Include="Framework\" />
 	</ItemGroup>
 
 	<!-- References -->
