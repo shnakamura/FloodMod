@@ -1,1 +1,4 @@
-NPCs.InfectionFormNPC.DisplayName: Infection Form
+NPCs: {
+	InfectionFormNPC.DisplayName: Infection Form
+	InfectedCrimeraNPC.DisplayName: Infected Crimera N P C
+}

@@ -1,4 +1,4 @@
-﻿namespace FloodMod.Framework.Items.Components;
+﻿namespace FloodMod.Core.Items.Components;
 
 /// <summary>
 ///     Provides a base class for defining components that can extend the behavior of <see cref="Item"/>.

@@ -1,4 +1,4 @@
-﻿namespace FloodMod.Framework.NPCs.Components;
+﻿namespace FloodMod.Core.NPCs;
 
 /// <summary>
 ///     Provides a base class for defining components that can extend the behavior of <see cref="NPC"/>.

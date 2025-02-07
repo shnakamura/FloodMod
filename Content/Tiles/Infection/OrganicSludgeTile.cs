@@ -1,4 +1,4 @@
-﻿namespace FloodMod.Content.Tiles;
+﻿namespace FloodMod.Content.Tiles.Infection;
 
 public class OrganicSludgeTile : ModTile
 {

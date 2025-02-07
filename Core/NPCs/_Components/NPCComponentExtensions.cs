@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace FloodMod.Framework.NPCs.Components;
+﻿namespace FloodMod.Core.NPCs;
 
 /// <summary>
 ///     Provides <see cref="NPC"/> extension methods regarding <see cref="NPCComponent"/>.
@@ -10,15 +8,15 @@ namespace FloodMod.Framework.NPCs.Components;
 /// </remarks>
 public static class NPCComponentExtensions
 {
-    public static bool TryEnable<T>(this NPC npc, [NotNullWhen(true)] out T? component) where T : NPCComponent
+    public static T Enable<T>(this NPC npc) where T : NPCComponent
     {
-        if (!npc.TryGetGlobalNPC(out component))
+        if (!npc.TryGetGlobalNPC(out T component))
         {
-            return false;
+            throw new InvalidNPCComponentException($"Component of type {typeof(T).FullName} could not be enabled.");
         }
-        
+
         component!.Enabled = true;
 
-        return true;
+        return component;
     }
 }

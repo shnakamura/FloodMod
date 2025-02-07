@@ -6,7 +6,7 @@ using ReLogic.Content;
 using Terraria.Audio;
 using Terraria.GameContent;
 
-namespace FloodMod.Content.NPCs;
+namespace FloodMod.Content.NPCs.Infection;
 
 public class InfectionFormNPC : ModNPC
 {

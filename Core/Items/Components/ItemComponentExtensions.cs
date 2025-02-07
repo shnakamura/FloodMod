@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace FloodMod.Framework.Items.Components;
+namespace FloodMod.Core.Items.Components;
 
 /// <summary>
 ///     Provides <see cref="Item"/> extension methods regarding <see cref="ItemComponent"/>.
